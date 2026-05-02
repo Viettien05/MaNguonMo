@@ -1,0 +1,35 @@
+# 1. Loại bỏ các file cấu hình nhạy cảm 
+wp-config.php
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+
+# 2. Loại bỏ các thư mục hệ thống của WordPress 
+wp-admin/
+wp-includes/
+index.php
+license.txt
+readme.html
+wp-*.php
+xmlrpc.php
+
+# 3. Loại bỏ các nội dung người dùng tải lên (Ảnh xe, tài liệu khách hàng)
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+
+# 4. Loại bỏ các Themes và Plugins không phải của mình
+wp-content/themes/*
+!wp-content/themes/ten-theme-cua-ban/
+wp-content/plugins/*
+
+# 5. GIỮ LẠI PLUGIN CỦA PROJECT
+!wp-content/plugins/quan-ly-thue-xe/
+
+# 6. Loại bỏ file rác của hệ điều hành và IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
