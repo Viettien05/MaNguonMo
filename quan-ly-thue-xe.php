@@ -15,6 +15,8 @@ define('QLTX_PATH', plugin_dir_path(__FILE__));
 include_once QLTX_PATH . 'includes/db-handler.php';      // Xử lý Database
 include_once QLTX_PATH . 'includes/view-list-xe.php';    // Giao diện danh sách xe
 include_once QLTX_PATH . 'includes/view-list-kh.php';    // Giao diện danh sách khách hàng
+include_once QLTX_PATH . 'includes/view-add-kh.php';
+include_once QLTX_PATH . 'includes/view-edit-kh.php';
 
 // 3. KÍCH HOẠT TẠO BẢNG KHI ACTIVE PLUGIN
 // Hàm qltx_init_database nằm trong file db-handler.php mà các bạn đã viết
@@ -54,6 +56,9 @@ function qltx_register_menu() {
         'qltx-list-kh', 
         'qltx_giao_dien_list_kh'
     );
+
+    add_submenu_page(null, 'Thêm khách hàng', '', 'manage_options', 'qltx-add-kh', 'qltx_giao_dien_add_kh');
+    add_submenu_page(null, 'Sửa khách hàng', '', 'manage_options', 'qltx-edit-kh', 'qltx_giao_dien_edit_kh');
 }
 
 // 5. GIAO DIỆN TRANG CHỦ (DASHBOARD)

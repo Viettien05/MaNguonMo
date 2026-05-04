@@ -18,7 +18,7 @@ function qltx_init_database() {
     $sql_khach = "CREATE TABLE IF NOT EXISTS tbl_khachhang (
         id_kh INT NOT NULL AUTO_INCREMENT,
         ho_ten VARCHAR(100) NOT NULL,
-        cccd VARCHAR(20) NOT NULL,
+        cccd VARCHAR(20) NOT NULL UNIQUE,
         so_dien_thoai VARCHAR(15),
         dia_chi TEXT,
         PRIMARY KEY (id_kh)
