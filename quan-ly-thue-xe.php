@@ -18,6 +18,9 @@ include_once QLTX_PATH . 'includes/view-list-kh.php';    // Giao diện danh sá
 include_once QLTX_PATH . 'includes/view-add-kh.php';
 include_once QLTX_PATH . 'includes/view-edit-kh.php';
 
+include_once QLTX_PATH . 'includes/view-add-hopdong.php';
+include_once QLTX_PATH . 'includes/view-list-hopdong.php';
+
 // 3. KÍCH HOẠT TẠO BẢNG KHI ACTIVE PLUGIN
 // Hàm qltx_init_database nằm trong file db-handler.php mà các bạn đã viết
 register_activation_hook(__FILE__, 'qltx_init_database');
@@ -37,7 +40,7 @@ function qltx_register_menu() {
         6
     );
 
-    // Menu con: Danh sách xe (Tiến phụ trách)
+    // Menu con: Danh sách xe
     add_submenu_page(
         'qltx-main', 
         'Danh sách xe', 
@@ -47,7 +50,7 @@ function qltx_register_menu() {
         'qltx_giao_dien_list_xe'
     );
 
-    // Menu con: Quản lý khách hàng (Trình phụ trách)
+    // Menu con: Quản lý khách hàng
     add_submenu_page(
         'qltx-main', 
         'Quản lý khách', 
@@ -59,6 +62,12 @@ function qltx_register_menu() {
 
     add_submenu_page(null, 'Thêm khách hàng', '', 'manage_options', 'qltx-add-kh', 'qltx_giao_dien_add_kh');
     add_submenu_page(null, 'Sửa khách hàng', '', 'manage_options', 'qltx-edit-kh', 'qltx_giao_dien_edit_kh');
+
+
+    add_submenu_page('qltx-main', 'Danh sách hợp đồng', '📜 Hợp đồng', 'manage_options', 'qltx-list-hd', 'qltx_giao_dien_list_hd');
+    
+    // Trang thêm hợp đồng mới
+    add_submenu_page(null, 'Lập hợp đồng mới', '➕ Lập hợp đồng', 'manage_options', 'qltx-add-hd', 'qltx_giao_dien_add_hd');
 }
 
 // 5. GIAO DIỆN TRANG CHỦ (DASHBOARD)
