@@ -41,3 +41,4 @@ function qltx_init_database() {
     dbDelta($sql_khach);
     dbDelta($sql_hd);
 }
+?>
