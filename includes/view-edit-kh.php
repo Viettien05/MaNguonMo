@@ -1,27 +1,26 @@
 <?php
+if (!defined('ABSPATH')) exit;
+
 function qltx_giao_dien_edit_kh() {
     global $wpdb;
     $table_name = 'tbl_khachhang';
-    $id = intval($_GET['id']);
+    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
     $message = '';
 
-    // Xử lý khi nhấn nút Cập nhật
     if (isset($_POST['btn_update_kh'])) {
         $wpdb->update(
             $table_name,
             array(
-                'ho_ten' => sanitize_text_field($_POST['txt_hoten']),
-                'cccd'   => sanitize_text_field($_POST['txt_cccd']),
-                'so_dien_thoai' => sanitize_text_field($_POST['txt_sdt']),
-                'dia_chi' => sanitize_textarea_field($_POST['txt_diachi'])
+                'ho_ten'        => sanitize_text_field($_POST['txt_hoten']),
+                'email'         => sanitize_email($_POST['txt_email']),
+                'so_dien_thoai' => sanitize_text_field($_POST['txt_sdt'])
             ),
             array('id_kh' => $id)
         );
         $message = '<div class="updated"><p>Cập nhật thông tin thành công! Đang quay lại danh sách...</p></div>';
-        echo "<script>setTimeout(function(){ window.location.href = 'admin.php?page=qltx-list-kh'; }, 2000);</script>";
+        echo "<script>setTimeout(function(){ window.location.href = 'admin.php?page=qltx-list-kh'; }, 1200);</script>";
     }
 
-    // Lấy dữ liệu cũ để đổ vào Form
     $kh = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id_kh = %d", $id));
 
     if (!$kh) {
@@ -30,7 +29,7 @@ function qltx_giao_dien_edit_kh() {
     }
     ?>
     <div class="wrap">
-        <h1>📝 Chỉnh sửa thông tin khách hàng</h1>
+        <h1>Chỉnh sửa thông tin khách hàng</h1>
         <?php echo $message; ?>
         <form method="post" style="background:#fff; padding:20px; border:1px solid #ccd0d4; margin-top:20px; max-width:600px;">
             <table class="form-table">
@@ -39,16 +38,12 @@ function qltx_giao_dien_edit_kh() {
                     <td><input type="text" name="txt_hoten" value="<?php echo esc_attr($kh->ho_ten); ?>" class="regular-text" required></td>
                 </tr>
                 <tr>
-                    <th>Số CCCD</th>
-                    <td><input type="text" name="txt_cccd" value="<?php echo esc_attr($kh->cccd); ?>" class="regular-text" required></td>
+                    <th>Email</th>
+                    <td><input type="email" name="txt_email" value="<?php echo esc_attr($kh->email); ?>" class="regular-text" required></td>
                 </tr>
                 <tr>
                     <th>Số điện thoại</th>
                     <td><input type="text" name="txt_sdt" value="<?php echo esc_attr($kh->so_dien_thoai); ?>" class="regular-text" required></td>
-                </tr>
-                <tr>
-                    <th>Địa chỉ</th>
-                    <td><textarea name="txt_diachi" rows="3" class="regular-text"><?php echo esc_textarea($kh->dia_chi); ?></textarea></td>
                 </tr>
             </table>
             <p class="submit">

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 function qltx_giao_dien_list_hd() {
     global $wpdb;
     $table_hd = 'tbl_hopdong';
@@ -57,6 +57,7 @@ function qltx_giao_dien_list_hd() {
             display: inline-block;
         }
         .status-active { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-pending { background: #fef9c3; color: #a16207; border: 1px solid #fde68a; }
         .status-done { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
         
         /* Text & Price */
@@ -82,6 +83,8 @@ function qltx_giao_dien_list_hd() {
             font-size: 12px;
         }
         .btn-tra-xe:hover { background: #135e96; }
+        .btn-detail { color: #2271b1; text-decoration: none; font-size: 12px; font-weight: 600; margin-right: 8px; }
+        .btn-detail:hover { text-decoration: underline; }
         .btn-delete { color: #d63638; text-decoration: none; font-size: 12px; margin-left: 10px; }
         .btn-delete:hover { text-decoration: underline; }
     </style>
@@ -102,8 +105,9 @@ function qltx_giao_dien_list_hd() {
                     <th width="12%">Ngày thuê</th>
                     <th width="12%">Ngày trả dự kiến</th>
                     <th width="13%">Tổng tiền</th>
+                    <th width="12%">Thanh toán</th>
                     <th width="10%">Trạng thái</th>
-                    <th width="13%">Hành động</th>
+                    <th width="11%">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,14 +123,22 @@ function qltx_giao_dien_list_hd() {
                     <td><small>🏁</small> <?php echo date('d/m/Y', strtotime($row->ngay_tra_du_kien)); ?></td>
                     <td><span class="price-text"><?php echo number_format($row->tong_tien); ?>đ</span></td>
                     <td>
+                        <?php $is_paid = ($row->trang_thai_thanh_toan === 'Da thanh toan'); ?>
+                        <span class="status-badge <?php echo $is_paid ? 'status-active' : 'status-pending'; ?>">
+                            <?php echo $is_paid ? 'ĐÃ THANH TOÁN' : 'CHƯA THANH TOÁN'; ?>
+                        </span>
+                    </td>
+                    <td>
                         <?php 
                             $is_active = ($row->tinh_trang_hd == 'Dang thuc hien');
-                            echo '<span class="status-badge ' . ($is_active ? 'status-active' : 'status-done') . '">';
-                            echo $is_active ? '● ĐANG THUÊ' : '✓ ĐÃ TRẢ';
+                            $is_pending = ($row->tinh_trang_hd == 'Cho xac nhan');
+                            echo '<span class="status-badge ' . ($is_pending ? 'status-pending' : ($is_active ? 'status-active' : 'status-done')) . '">';
+                            echo $is_pending ? 'CHỜ XÁC NHẬN' : ($is_active ? '● ĐANG THUÊ' : '✓ ĐÃ TRẢ');
                             echo '</span>';
                         ?>
                     </td>
                     <td>
+                        <a href="admin.php?page=qltx-detail-hd&id_hd=<?php echo $row->id_hopdong; ?>" class="btn-detail">Chi tiết</a>
                         <?php if ($is_active): ?>
                             <a href="admin.php?page=qltx-list-hd&action=tra_xe&id_hd=<?php echo $row->id_hopdong; ?>&id_xe=<?php echo $row->id_xe; ?>" 
                                class="btn-tra-xe" 

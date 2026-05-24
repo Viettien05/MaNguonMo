@@ -20,10 +20,19 @@ include_once QLTX_PATH . 'includes/view-edit-kh.php';
 
 include_once QLTX_PATH . 'includes/view-add-hopdong.php';
 include_once QLTX_PATH . 'includes/view-list-hopdong.php';
+include_once QLTX_PATH . 'includes/view-detail-hopdong.php';
+include_once QLTX_PATH . 'includes/view-report-doanhthu.php';
+
+include_once QLTX_PATH . 'includes/view-home.php';
+include_once QLTX_PATH . 'includes/view-frontend-cars.php';
+include_once QLTX_PATH . 'includes/view-rental-history.php';
+include_once QLTX_PATH . 'includes/view-auth.php';
 
 // 3. KÍCH HOẠT TẠO BẢNG KHI ACTIVE PLUGIN
-// Hàm qltx_init_database nằm trong file db-handler.php mà các bạn đã viết
 register_activation_hook(__FILE__, 'qltx_init_database');
+add_action('admin_init', 'qltx_remove_cccd_column');
+add_action('init', 'qltx_migrate_xe_columns');
+add_action('init', 'qltx_migrate_hopdong_columns');
 
 // 4. ĐĂNG KÝ MENU TRONG ADMIN
 add_action('admin_menu', 'qltx_register_menu');
@@ -63,11 +72,23 @@ function qltx_register_menu() {
     add_submenu_page(null, 'Thêm khách hàng', '', 'manage_options', 'qltx-add-kh', 'qltx_giao_dien_add_kh');
     add_submenu_page(null, 'Sửa khách hàng', '', 'manage_options', 'qltx-edit-kh', 'qltx_giao_dien_edit_kh');
 
-
     add_submenu_page('qltx-main', 'Danh sách hợp đồng', '📜 Hợp đồng', 'manage_options', 'qltx-list-hd', 'qltx_giao_dien_list_hd');
+    add_submenu_page('qltx-main', 'Thống kê doanh thu', '📊 Thống kê doanh thu', 'manage_options', 'qltx-report-doanhthu', 'qltx_giao_dien_report_doanhthu');
     
     // Trang thêm hợp đồng mới
     add_submenu_page(null, 'Lập hợp đồng mới', '➕ Lập hợp đồng', 'manage_options', 'qltx-add-hd', 'qltx_giao_dien_add_hd');
+    add_submenu_page(null, 'Chi tiết hợp đồng', '', 'manage_options', 'qltx-detail-hd', 'qltx_giao_dien_detail_hd');
+}
+
+// =========================================================================
+// CHỖ THÊM MỚI: NẠP THƯ VIỆN MEDIA WP ĐỂ ĐIỀU KHIỂN KHUNG CHỌN ẢNH TỪ FILE JS
+// =========================================================================
+add_action('admin_enqueue_scripts', 'qltx_load_media_library_for_admin');
+function qltx_load_media_library_for_admin($hook) {
+    // Chỉ ép nạp thư viện khi đang ở đúng trang Quản lý xe để tránh làm nặng các trang khác
+    if (isset($_GET['page']) && $_GET['page'] === 'qltx-list-xe') {
+        wp_enqueue_media();
+    }
 }
 
 // 5. GIAO DIỆN TRANG CHỦ (DASHBOARD)

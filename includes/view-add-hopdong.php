@@ -19,13 +19,14 @@ function qltx_giao_dien_add_hd() {
                 'ngay_thue' => $ngay_thue,
                 'ngay_tra_du_kien' => $ngay_tra,
                 'tong_tien' => $tong_tien,
+                'trang_thai_thanh_toan' => 'Da thanh toan',
                 'tinh_trang_hd' => 'Dang thuc hien'
             )
         );
 
         if ($inserted) {
             // CẬP NHẬT TRẠNG THÁI XE SANG 'Da thue'
-            $wpdb->update('tbl_xe', array('trang_thai' => 'Da thue'), array('id_xe' => $id_xe));
+            $wpdb->update('tbl_xe', array('trang_thai' => 'Dang thue'), array('id_xe' => $id_xe));
             
             $message = '<div class="notice notice-success"><p>✅ Lập hợp đồng thành công! Xe đã được chuyển trạng thái "Đã thuê".</p></div>';
             echo "<script>setTimeout(function(){ window.location.href = 'admin.php?page=qltx-list-hd'; }, 2000);</script>";
